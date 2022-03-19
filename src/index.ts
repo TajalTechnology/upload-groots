@@ -1,9 +1,9 @@
 interface IPlay {
-    play(): void;
+  play(): void;
 }
 
-class Strikeing implements IPlay {
-    play() {
-        return 'Welcome to the class';
-    }
+export class Strikeing implements IPlay {
+  play() {
+    return 'Welcome to the class';
+  }
 }

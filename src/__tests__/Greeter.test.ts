@@ -1,4 +1,4 @@
-import { Greeter } from '../index';
+import {Strikeing} from '../index';
 test('My Greeter', () => {
-  expect(Greeter('Carl')).toBe('Carl');
+  expect(Strikeing).toBe('Welcome to the class');
 });
