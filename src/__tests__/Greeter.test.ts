@@ -1,4 +1,5 @@
-import {Strikeing} from '../index';
+import { Strikeing } from '../index';
 test('My Greeter', () => {
-  expect(Strikeing).toBe('Welcome to the class');
+  const strikeing = new Strikeing();
+  expect(strikeing.play()).toBe('Welcome to the class');
 });
