@@ -4,13 +4,13 @@ import path = require('path');
 import { IFileUpload } from './interface';
 
 export class FileUploader {
-  // file: IFileUpload;
+  file: IFileUpload;
 
-  // constructor(file: IFileUpload) {
-  //   this.file = file;
-  // }
+  constructor(file: IFileUpload) {
+    this.file = file;
+  }
 
   uploadFile(creadentials: any, file: any) {
-    this.uploadFile(creadentials, file);
+    this.file.uploadFile(creadentials, file);
   }
 }
