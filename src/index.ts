@@ -15,7 +15,7 @@ export class AWS implements IFileUpload {
       Bucket: bucketName,
       Body: fileStream,
       Key: file.filename,
-    }; 
+    };
 
     const s3 = new S3({
       region,

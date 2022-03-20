@@ -1,4 +1,4 @@
-import { Strikeing } from '../index';
+import { AWS } from '../index';
 test('My Greeter', () => {
-  const strikeing = new Strikeing();
+  const aws = new AWS();
 });
