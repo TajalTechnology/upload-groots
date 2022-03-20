@@ -15,9 +15,7 @@ export class FileUploader {
   uploadFile(creadentials: any, file: any) {
     this.file.uploadFile(creadentials, file);
   }
-};
+}
 
 export const awsFileUploadService = new FileUploader(new AWS());
 export const gcpFileUploadService = new FileUploader(new GCP());
-
-
