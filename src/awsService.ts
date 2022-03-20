@@ -4,7 +4,7 @@ import path = require('path');
 import { IFileUpload } from './interface';
 
 export class AWS implements IFileUpload {
-  async uploadFile(creadentials: any, file: any) {
+  uploadFile(creadentials: any, file: any) {
     const accessKeyId = creadentials.accessKeyId;
     const secretAccessKey = creadentials.secretAccessKey;
     const region = creadentials.region;
@@ -22,6 +22,6 @@ export class AWS implements IFileUpload {
       accessKeyId,
       secretAccessKey,
     });
-    return await s3.upload(uploadParams).promise();
+    return s3.upload(uploadParams).promise();
   }
 }
