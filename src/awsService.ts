@@ -22,7 +22,6 @@ export class AWS implements IFileUpload {
       accessKeyId,
       secretAccessKey,
     });
-    const uploaded = await s3.upload(uploadParams).promise();
-    return uploaded;
+    return await s3.upload(uploadParams).promise();
   }
 }
