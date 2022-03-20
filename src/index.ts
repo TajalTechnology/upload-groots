@@ -13,7 +13,7 @@ export class FileUploader {
   }
 
   uploadFile(creadentials: any, file: any) {
-    this.file.uploadFile(creadentials, file);
+    return this.file.uploadFile(creadentials, file);
   }
 }
 
