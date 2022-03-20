@@ -1,4 +1,4 @@
-import { AWS } from '../index';
+// import { AWS } from '../index';
 test('My Greeter', () => {
-  const aws = new AWS();
+  // const aws = new AWS();
 });
