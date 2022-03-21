@@ -35,7 +35,7 @@ export class AWS implements IFileUpload {
   }
 
   async getFile(fileName: string, bucketName: string) {
-    var file = require('fs').createWriteStream(fileName);
+    const file = require('fs').createWriteStream(fileName);
     if (file) return file;
     else return false;
   }
