@@ -36,7 +36,7 @@ export class AWS implements IFileUpload {
 
   async getFile(fileName: string, bucketName: string) {
     const params = { bucketName, fileName };
-    const file = await this.s3.getObject(params).promise();
+    const file = await this.s3.getObject(params).createReadStream();
     if (file) return file;
     else return false;
   }

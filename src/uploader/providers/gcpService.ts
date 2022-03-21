@@ -7,7 +7,10 @@ import { Storage, Bucket } from '@google-cloud/storage';
 import { UPLOAD_CONSTANTS } from '../../types/upload.constants';
 
 export class GCP implements IFileUpload {
-  storage = new Storage();
+  private storage: Storage;
+  constructor() {
+    this.storage = new Storage({});
+  }
 
   async deleteFile(creadentials: any, file: any) {
     const bucket = creadentials.bucketName;
@@ -19,16 +22,22 @@ export class GCP implements IFileUpload {
     return await bucket.file(objectName).delete();
   }
 
-  uploadFile(creadentials: any, file: any) {
-    const bucket = creadentials.bucketName;
+  async uploadFile(creadentials: any, file: any) {
+    const storage = new Storage({ keyFilename: file.fileName });
+    const bucket = storage.bucket(creadentials.bucketName);
     const linkFile = bucket.file(file.fileName);
-    const stream = linkFile.createWriteStream();
+
+    const stream = linkFile.createWriteStream({
+      metadata: { contentType: file.mimetype },
+      resumable: false,
+    });
 
     stream.on('error', (err: string) => {
       throw new Error(UPLOAD_CONSTANTS.ERROR);
     });
 
-    stream.on('finish', () => {
+    stream.on('finish', async () => {
+      await bucket.file(file.fileName).makePublic();
       const publicUrl = format(`${UPLOAD_CONSTANTS.GCP_URL}/${bucket.name}/${linkFile.name}`);
       return publicUrl;
     });
@@ -37,6 +46,7 @@ export class GCP implements IFileUpload {
   }
 
   async getFile(fileName: string, bucketName: string) {
-    return `${UPLOAD_CONSTANTS.GCP_URL}/${bucketName}/${fileName}`;
+    const file = this.storage.bucket(bucketName).file(fileName);
+    return file;
   }
 }
