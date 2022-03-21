@@ -1,5 +1,5 @@
 import fs = require('fs');
-const aws = require('aws-sdk');
+import aws = require('aws-sdk');
 import S3 = require('aws-sdk/clients/s3');
 import path = require('path');
 import { IFileUpload } from '../../types/interface';
@@ -35,8 +35,7 @@ export class AWS implements IFileUpload {
   }
 
   async getFile(fileName: string, bucketName: string) {
-    const params = { bucketName, fileName };
-    const file = await this.s3.getObject(params).createReadStream();
+    var file = require('fs').createWriteStream(fileName);
     if (file) return file;
     else return false;
   }
