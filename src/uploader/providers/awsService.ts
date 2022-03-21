@@ -1,5 +1,5 @@
 import fs = require('fs');
-var aws = require('aws-sdk');
+const aws = require('aws-sdk');
 import S3 = require('aws-sdk/clients/s3');
 import path = require('path');
 import { IFileUpload } from '../../types/interface';
