@@ -1,6 +1,6 @@
 {
   "name": "upload-groots",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A nice greeter",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -42,6 +42,7 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "aws-sdk": "^2.1096.0"
+    "aws-sdk": "^2.1096.0",
+    "dotenv": "^16.0.0"
   }
 }

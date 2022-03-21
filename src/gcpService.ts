@@ -1,6 +1,6 @@
 import fs = require('fs');
-import S3 = require('aws-sdk/clients/s3');
 import path = require('path');
+import S3 = require('aws-sdk/clients/s3');
 import { IFileUpload } from './interface';
 
 export class GCP implements IFileUpload {

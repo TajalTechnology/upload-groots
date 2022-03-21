@@ -1,9 +1,10 @@
 import fs = require('fs');
-import S3 = require('aws-sdk/clients/s3');
 import path = require('path');
-import { IFileUpload } from './interface';
 import { AWS } from './awsService';
 import { GCP } from './gcpService';
+import S3 = require('aws-sdk/clients/s3');
+import { IFileUpload } from './interface';
+require('dotenv').config();
 
 export class FileUploader {
   file: IFileUpload;
