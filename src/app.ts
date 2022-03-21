@@ -25,7 +25,7 @@ export class FileStore implements IApp {
     return this.uploader.deleteFile(creadentials, file);
   }
 
-  getFile(fileName: string, bucketName: string) {
+  public getFile(fileName: string, bucketName: string) {
     return this.uploader.getFile(fileName, bucketName);
   }
 }
