@@ -1,6 +1,6 @@
 # upload groots
 
-Follow this step to upload your file using this npm package.
+Follow this step to upload your file into cloud(AWS/GCP) using this npm package.
 
 ## Installation
 
@@ -15,7 +15,12 @@ $ npm i upload-groots
 If you upload your file into aws s3 bucket, follow this step:
 
 ```
-import { fileStorageAws } from 'upload-groots';
+import { fileStorageAws, fileStorageGcp } from 'upload-groots';
+```
+
+Inside your controller, process those variables
+
+```
 let file = req.file
 
   const credential = {
@@ -24,40 +29,35 @@ let file = req.file
     region,
     bucketName,
   };
-
-  //for upload your file
-  await fileStorageAws.upload(credential, file);
-
-//for delete your file
-  await fileStorageAws.delete(credential, file);
-
-//for getFile your file
-  await fileStorageAws.getFile(fileName, bucketName);
-
 ```
 
 #### GOOGLE CLOUD STORAGE
 
-If you upload your file into Google clouse storage, follow this step:
+Then use those line of of CODE to upload file into google cloud storage
 
 ```
-import { fileStorageGcp } from 'upload-groots';
-let file = req.file
+  //for upload your file
+  await fileStorageAws.upload(credential, file);
 
-  const credential = {
-    accessKeyId,
-    secretAccessKey,
-    region,
-    bucketName,
-  };
+  //for delete your file
+  await fileStorageAws.delete(credential, file);
 
-//for upload your file
+  //for getFile your file
+  await fileStorageAws.getFile(fileName, bucketName);
+```
+
+#### AWS S3 BUCKET
+
+Or use those line of of code to upload file into aws s3 bucket
+
+```
+  //for upload your file
   await fileStorageGcp.upload(credential, file);
 
-//for delete your file
+  //for delete your file
   await fileStorageGcp.delete(credential, file);
 
-//for getFile your file
+  //for getFile your file
   await fileStorageGcp.getFile(fileName, bucketName);
 
 ```
