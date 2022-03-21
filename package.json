@@ -1,9 +1,9 @@
 {
   "name": "upload-groots",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A nice greeter",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
@@ -39,7 +39,7 @@
     "typescript": "^4.6.2"
   },
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "dependencies": {
     "@google-cloud/storage": "^5.18.2",

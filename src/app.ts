@@ -30,5 +30,5 @@ export class FileStore implements IApp {
   }
 }
 
-const fileStorageAws = new FileStore(Providers.AWS);
-const fileStorageGcp = new FileStore(Providers.GCP);
+export const fileStorageAws = new FileStore(Providers.AWS);
+export const fileStorageGcp = new FileStore(Providers.GCP);
