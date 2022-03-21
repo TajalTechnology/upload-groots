@@ -11,14 +11,12 @@ export class GCP implements IFileUpload {
 
   async deleteFile(creadentials: any, file: any) {
     const bucket = creadentials.bucketName;
-    const fileExits = await bucket.file(file.fileName).exists();
 
-    if (fileExits) {
-      const objectName = 'File name modification if need';
-      return await bucket.file(objectName).delete();
-    } else {
-      throw new Error(UPLOAD_CONSTANTS.NOT_FOUND);
-    }
+    const fileExits = await bucket.file(file.fileName).exists();
+    if (!fileExits) throw new Error(UPLOAD_CONSTANTS.NOT_FOUND);
+
+    const objectName = 'File name modification if need';
+    return await bucket.file(objectName).delete();
   }
 
   uploadFile(creadentials: any, file: any) {
@@ -27,11 +25,11 @@ export class GCP implements IFileUpload {
     const stream = linkFile.createWriteStream();
 
     stream.on('error', (err: string) => {
-      throw new Error('Method not implemented.' + err);
+      throw new Error(UPLOAD_CONSTANTS.ERROR);
     });
 
     stream.on('finish', () => {
-      const publicUrl = format(`https://storage.googleapis.com/${this.bucket.name}/${linkFile.name}`);
+      const publicUrl = format(`${UPLOAD_CONSTANTS.GCP_URL}/${bucket.name}/${linkFile.name}`);
       return publicUrl;
     });
 
@@ -39,6 +37,6 @@ export class GCP implements IFileUpload {
   }
 
   async getFile(fileName: string, bucketName: string) {
-    return `https://storage.googleapis.com/${bucketName}/${fileName}`;
+    return `${UPLOAD_CONSTANTS.GCP_URL}/${bucketName}/${fileName}`;
   }
 }

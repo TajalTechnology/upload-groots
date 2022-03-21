@@ -9,6 +9,7 @@ export class AWS implements IFileUpload {
   constructor(s3 = new aws.S3()) {
     this.s3 = s3;
   }
+
   async uploadFile(creadentials: any, file: any) {
     const accessKeyId = creadentials.accessKeyId;
     const secretAccessKey = creadentials.secretAccessKey;
@@ -24,15 +25,13 @@ export class AWS implements IFileUpload {
   async deleteFile(creadentials: any, file: any) {
     const bucketName = creadentials.bucketName;
     const params = { Bucket: bucketName, Key: file.filename };
+    const fileName = file.filename;
 
-    const exists = await this.s3.headObject(params);
-    if (exists) {
-      const deleted = this.s3.deleteObject(params);
-      if (!deleted) return false;
-      return true;
-    } else {
-      return false;
-    }
+    const exists = await this.getFile(fileName, bucketName);
+    if (!exists) return false;
+    const deleted = this.s3.deleteObject(params);
+    if (!deleted) return false;
+    return true;
   }
 
   async getFile(fileName: string, bucketName: string) {
