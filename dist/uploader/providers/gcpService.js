@@ -41,39 +41,52 @@ var prettier_1 = require("prettier");
 var storage_1 = require("@google-cloud/storage");
 var upload_constants_1 = require("../../types/upload.constants");
 var GCP = /** @class */ (function () {
-    function GCP() {
+    function GCP(bucket) {
         this.storage = new storage_1.Storage({});
+        this.bucket = bucket;
     }
-    GCP.prototype.deleteFile = function (creadentials, file) {
+    GCP.prototype.deleteFile = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var bucket, fileExits, objectName;
+            var bucketName, fileExits;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        bucket = creadentials.bucketName;
-                        return [4 /*yield*/, bucket.file(file.fileName).exists()];
+                        bucketName = upload_constants_1.credential.bucketName;
+                        return [4 /*yield*/, this.bucket.file(file.fileName).exists()];
                     case 1:
                         fileExits = _a.sent();
                         if (!fileExits)
                             throw new Error(upload_constants_1.UPLOAD_CONSTANTS.NOT_FOUND);
-                        objectName = 'File name modification if need';
-                        return [4 /*yield*/, bucket.file(objectName).delete()];
+                        if (!bucketName) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.storage.bucket(bucketName).file(file.fileName).delete()];
                     case 2: return [2 /*return*/, _a.sent()];
+                    case 3: return [2 /*return*/, upload_constants_1.UPLOAD_CONSTANTS.CREDENTIALS_MISSING];
                 }
             });
         });
     };
-    GCP.prototype.uploadFile = function (creadentials, file) {
+    GCP.prototype.fileExists = function (fileName) {
         return __awaiter(this, void 0, void 0, function () {
-            var storage, bucket, linkFile, stream;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bucket.file(fileName).exists()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    GCP.prototype.uploadFile = function (file) {
+        return __awaiter(this, void 0, void 0, function () {
+            var bucketName, storage, bucket, linkFile, stream;
             var _this = this;
             return __generator(this, function (_a) {
+                bucketName = upload_constants_1.credential.bucketName;
                 storage = new storage_1.Storage({ keyFilename: file.fileName });
-                bucket = storage.bucket(creadentials.bucketName);
-                linkFile = bucket.file(file.fileName);
+                bucket = storage.bucket(bucketName);
+                linkFile = bucket.file(file.originalname);
                 stream = linkFile.createWriteStream({
                     metadata: { contentType: file.mimetype },
-                    resumable: false,
+                    resumable: false
                 });
                 stream.on('error', function (err) {
                     throw new Error(upload_constants_1.UPLOAD_CONSTANTS.ERROR);
@@ -82,10 +95,10 @@ var GCP = /** @class */ (function () {
                     var publicUrl;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, bucket.file(file.fileName).makePublic()];
+                            case 0: return [4 /*yield*/, this.bucket.file(file.fileName).makePublic()];
                             case 1:
                                 _a.sent();
-                                publicUrl = (0, prettier_1.format)("".concat(upload_constants_1.UPLOAD_CONSTANTS.GCP_URL, "/").concat(bucket.name, "/").concat(linkFile.name));
+                                publicUrl = (0, prettier_1.format)("".concat(upload_constants_1.UPLOAD_CONSTANTS.GCP_URL, "/").concat(this.bucket.name, "/").concat(linkFile.name));
                                 return [2 /*return*/, publicUrl];
                         }
                     });

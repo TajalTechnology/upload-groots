@@ -17,12 +17,12 @@ export class FileStore implements IApp {
     }
   }
 
-  public upload(creadentials: any, file: any) {
-    return this.uploader.uploadFile(creadentials, file);
+  public upload(file: any, Option?: any) {
+    return this.uploader.uploadFile(file, Option);
   }
 
-  public delete(creadentials: any, file: any) {
-    return this.uploader.deleteFile(creadentials, file);
+  public delete(file: any) {
+    return this.uploader.deleteFile(file);
   }
 
   public getFile(fileName: string, bucketName: string) {

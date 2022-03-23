@@ -14,11 +14,11 @@ var FileStore = /** @class */ (function () {
                 this.uploader = new gcpService_1.GCP();
         }
     }
-    FileStore.prototype.upload = function (creadentials, file) {
-        return this.uploader.uploadFile(creadentials, file);
+    FileStore.prototype.upload = function (file, Option) {
+        return this.uploader.uploadFile(file, Option);
     };
-    FileStore.prototype.delete = function (creadentials, file) {
-        return this.uploader.deleteFile(creadentials, file);
+    FileStore.prototype.delete = function (file) {
+        return this.uploader.deleteFile(file);
     };
     FileStore.prototype.getFile = function (fileName, bucketName) {
         return this.uploader.getFile(fileName, bucketName);

@@ -37,53 +37,62 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AWS = void 0;
-var fs = require("fs");
-var aws = require("aws-sdk");
-var S3 = require("aws-sdk/clients/s3");
+var fs_1 = require("fs");
+var aws_sdk_1 = require("aws-sdk");
+var s3_1 = require("aws-sdk/clients/s3");
+var valdates_1 = require("../helper/valdates");
+var upload_constants_1 = require("../../types/upload.constants");
 var AWS = /** @class */ (function () {
     function AWS(s3) {
-        if (s3 === void 0) { s3 = new aws.S3(); }
-        this.s3 = new aws.S3();
+        if (s3 === void 0) { s3 = new aws_sdk_1.default.S3(); }
+        //aws credentials
+        this.Bucket = upload_constants_1.credential.bucketName;
+        this.region = upload_constants_1.credential.region;
+        this.accessKeyId = upload_constants_1.credential.accessKeyId;
+        this.secretAccessKey = upload_constants_1.credential.secretAccessKey;
+        this.s3 = new aws_sdk_1.default.S3();
         this.s3 = s3;
     }
-    AWS.prototype.uploadFile = function (creadentials, file) {
+    AWS.prototype.uploadFile = function (file, Option) {
         return __awaiter(this, void 0, void 0, function () {
-            var accessKeyId, secretAccessKey, region, bucketName, fileStream, uploadParams, s3;
+            var validation, Body, Key, uploadParams, s3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        accessKeyId = creadentials.accessKeyId;
-                        secretAccessKey = creadentials.secretAccessKey;
-                        region = creadentials.region;
-                        bucketName = creadentials.bucketName;
-                        fileStream = fs.createReadStream(file.path);
-                        uploadParams = { Bucket: bucketName, Body: fileStream, Key: file.filename };
-                        s3 = new S3({ region: region, accessKeyId: accessKeyId, secretAccessKey: secretAccessKey });
+                        if (!Option) return [3 /*break*/, 2];
+                        return [4 /*yield*/, (0, valdates_1.fileValidation)(file, Option)];
+                    case 1:
+                        validation = _a.sent();
+                        if (validation === false)
+                            return [2 /*return*/, upload_constants_1.UPLOAD_CONSTANTS.FILE_VALIDATION_ERROR];
+                        _a.label = 2;
+                    case 2:
+                        Body = fs_1.default.createReadStream(file.path);
+                        Key = file.filename;
+                        if (!(this.Bucket && Body && Key)) return [3 /*break*/, 4];
+                        uploadParams = { Bucket: this.Bucket, Body: Body, Key: Key };
+                        s3 = new s3_1.default({
+                            region: this.region,
+                            accessKeyId: this.accessKeyId,
+                            secretAccessKey: this.secretAccessKey
+                        });
                         return [4 /*yield*/, s3.upload(uploadParams).promise()];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [2 /*return*/, upload_constants_1.UPLOAD_CONSTANTS.CREDENTIALS_MISSING];
                 }
             });
         });
     };
-    AWS.prototype.deleteFile = function (creadentials, file) {
+    AWS.prototype.deleteFile = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var bucketName, params, fileName, exists, deleted;
+            var Key, params;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        bucketName = creadentials.bucketName;
-                        params = { Bucket: bucketName, Key: file.filename };
-                        fileName = file.filename;
-                        return [4 /*yield*/, this.getFile(fileName, bucketName)];
-                    case 1:
-                        exists = _a.sent();
-                        if (!exists)
-                            return [2 /*return*/, false];
-                        deleted = this.s3.deleteObject(params);
-                        if (!deleted)
-                            return [2 /*return*/, false];
-                        return [2 /*return*/, true];
+                Key = file.filename;
+                if (this.Bucket && Key) {
+                    params = { Bucket: this.Bucket, Key: file.filename };
+                    return [2 /*return*/, this.s3.deleteObject(params)];
                 }
+                return [2 /*return*/];
             });
         });
     };
@@ -91,7 +100,7 @@ var AWS = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var file;
             return __generator(this, function (_a) {
-                file = require('fs').createWriteStream(fileName);
+                file = fs_1.default.createWriteStream(fileName);
                 if (file)
                     return [2 /*return*/, file];
                 else

@@ -22,13 +22,6 @@ Inside your controller, process those variables
 
 ```
 let file = req.file
-
-  const credential = {
-    accessKeyId,
-    secretAccessKey,
-    region,
-    bucketName,
-  };
 ```
 
 #### GOOGLE CLOUD STORAGE
@@ -36,11 +29,20 @@ let file = req.file
 Then use those line of of CODE to upload file into google cloud storage
 
 ```
-  //for upload your file
-  await fileStorageAws.upload(credential, file);
+  /*
+  *for upload your file
+  * If you want to configure send your configuration using Options parameters.
+  */
+  await fileStorageAws.upload(file, Options);
+
+  /*
+  *for upload your file
+  * Without configuration
+  */
+   await fileStorageAws.upload(file);
 
   //for delete your file
-  await fileStorageAws.delete(credential, file);
+  await fileStorageAws.delete(file);
 
   //for getFile your file
   await fileStorageAws.getFile(fileName, bucketName);
@@ -51,11 +53,20 @@ Then use those line of of CODE to upload file into google cloud storage
 Or use those line of of code to upload file into aws s3 bucket
 
 ```
-  //for upload your file
-  await fileStorageGcp.upload(credential, file);
+  /*
+  *for upload your file
+  * If you want to configure send your configuration using Options parameters.
+  */
+  await fileStorageGcp.upload(file, Options);
+
+  /*
+  *for upload your file
+  * Without configuration.
+  */
+  await fileStorageGcp.upload(file, Options);
 
   //for delete your file
-  await fileStorageGcp.delete(credential, file);
+  await fileStorageGcp.delete(file, Options);
 
   //for getFile your file
   await fileStorageGcp.getFile(fileName, bucketName);

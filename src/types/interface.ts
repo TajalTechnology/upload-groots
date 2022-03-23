@@ -1,6 +1,6 @@
 export interface IFileUpload {
-  uploadFile(creadentials: any, file: any): any;
-  deleteFile(creadentials: any, file: any): any;
+  uploadFile(file: any, Option?: any): any;
+  deleteFile(file: any, Option?: any): any;
   getFile(fileName: string, bucketName: string): any;
 }
 
